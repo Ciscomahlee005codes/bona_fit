@@ -8,8 +8,15 @@ import Order from './Components/Order/Order'
 import Testimonials from './Components/Testimonials/Testimonials';
 import Contact from './Components/Contact/Contact';
 import Footer from './Components/Footer/Footer';
+import Loader from './Components/Loader/Loader';
 function App() {
    const [selectedProduct, setSelectedProduct] = useState("");
+
+   const [loading, setLoading] = useState(true);
+
+if (loading) {
+  return <Loader onFinish={() => setLoading(false)} />;
+}
 
   return (
     <>
