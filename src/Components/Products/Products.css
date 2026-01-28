@@ -1,0 +1,134 @@
+.products {
+  padding: 6rem 5%;
+  background: #000;
+  color: white;
+}
+
+.products-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.products h2 {
+  font-family: 'Oswald', sans-serif;
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.products h2 span {
+  color: #ff3c00;
+}
+
+/* FILTER */
+.filter-buttons {
+  margin-bottom: 3rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  padding: 8px 18px;
+  border: 1px solid #ff3c00;
+  background: transparent;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-weight: 600;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+  background: #ff3c00;
+}
+
+/* GRID */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 2rem;
+}
+
+/* CARD */
+.product-card {
+  perspective: 1000px;
+}
+
+.card-inner {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  transform-style: preserve-3d;
+  transition: transform 0.8s;
+}
+
+.product-card:hover .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.card-front {
+  background: #111;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.card-front img {
+  width: 100%;
+  height: 70%;
+  object-fit: cover;
+}
+
+.card-front h3 {
+  padding: 1rem;
+  font-size: 1.1rem;
+}
+
+.card-back {
+  background: #1a1a1a;
+  color: #fff;
+  transform: rotateY(180deg);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.card-back p {
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+.order-btn {
+  padding: 8px 20px;
+  background: #ff3c00;
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.order-btn:hover {
+  background: #ff5c2b;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .card-inner {
+    height: 320px;
+  }
+}
