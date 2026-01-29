@@ -83,17 +83,31 @@
 @media (max-width: 900px) {
   .contact-container {
     flex-direction: column;
+    gap: 3rem;
   }
 
+  /* Make map appear first on mobile */
   .contact-map {
-    min-height: 300px;
+    order: -1;
+    min-height: 420px; /* Bigger height */
+  }
+
+  .contact-map iframe {
+    height: 420px; /* Force visible height */
+    border-radius: 16px;
+  }
+
+  .contact-form {
+    width: 100%;
   }
 
   .contact-form h2 {
     text-align: center;
+    font-size: 2rem;
   }
 
   .contact-form p {
     text-align: center;
+    font-size: 0.95rem;
   }
 }
