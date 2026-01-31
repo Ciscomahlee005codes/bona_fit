@@ -1,25 +1,37 @@
 import { useState, useEffect } from "react";
 import "./Order.css";
 
+const products = [
+  "Ultra Slim Vibration Plate",
+  "Crosley Whole Body Vibration",
+  "Vibration Plate Trainer",
+  "Six-Pack Ab Machine",
+  "Executive Massage Chair",
+  "Multifunction Ab Crunch Bench",
+  "Indoor Spinning Bike",
+  "Advanced Vibration Trainer"
+];
+
 const Order = ({ selectedProduct }) => {
   const [formData, setFormData] = useState({
-  name: "",
-  phone: "",
-  product: selectedProduct || "",
-  quantity: "",
-  address: ""
-});
+    name: "",
+    phone: "",
+    product: selectedProduct || "",
+    quantity: "",
+    address: ""
+  });
 
-const [showSuccess, setShowSuccess] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
-useEffect(() => {
-  if (selectedProduct) {
-    setFormData((prev) => ({
-      ...prev,
-      product: selectedProduct
-    }));
-  }
-}, [selectedProduct]);
+  // Auto-fill product when coming from Product card
+  useEffect(() => {
+    if (selectedProduct) {
+      setFormData((prev) => ({
+        ...prev,
+        product: selectedProduct
+      }));
+    }
+  }, [selectedProduct]);
 
   const handleChange = (e) => {
     setFormData({
@@ -29,12 +41,12 @@ useEffect(() => {
   };
 
   const handleSubmit = (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  setShowSuccess(true);
+    setShowSuccess(true);
 
-  setTimeout(() => {
-    const message = `
+    setTimeout(() => {
+      const message = `
 Hello, I want to place an order:
 
 Name: ${formData.name}
@@ -42,17 +54,25 @@ Phone: ${formData.phone}
 Product: ${formData.product}
 Quantity: ${formData.quantity}
 Address: ${formData.address}
-    `;
+      `;
 
-    const whatsappNumber = "2348121269433";
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+      const whatsappNumber = "2348121269433";
+      const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 
-    window.open(url, "_blank");
+      window.open(url, "_blank");
 
-    setShowSuccess(false);
-  }, 2000);
-};
+      // Reset form after sending
+      setFormData({
+        name: "",
+        phone: "",
+        product: "",
+        quantity: "",
+        address: ""
+      });
 
+      setShowSuccess(false);
+    }, 2000);
+  };
 
   return (
     <section className="order" id="order">
@@ -74,6 +94,7 @@ Address: ${formData.address}
             name="name"
             placeholder="Full Name"
             required
+            value={formData.name}
             onChange={handleChange}
           />
 
@@ -82,19 +103,22 @@ Address: ${formData.address}
             name="phone"
             placeholder="Phone Number"
             required
+            value={formData.phone}
             onChange={handleChange}
           />
 
           <select
             name="product"
             required
+            value={formData.product}
             onChange={handleChange}
           >
             <option value="">Select Product</option>
-            <option>Adjustable Dumbbells</option>
-            <option>Commercial Treadmill</option>
-            <option>Olympic Barbell</option>
-            <option>Bench Press Station</option>
+            {products.map((item, index) => (
+              <option key={index} value={item}>
+                {item}
+              </option>
+            ))}
           </select>
 
           <input
@@ -103,6 +127,7 @@ Address: ${formData.address}
             placeholder="Quantity"
             required
             min="1"
+            value={formData.quantity}
             onChange={handleChange}
           />
 
@@ -110,6 +135,7 @@ Address: ${formData.address}
             name="address"
             placeholder="Delivery Address"
             required
+            value={formData.address}
             onChange={handleChange}
           ></textarea>
 
@@ -119,15 +145,14 @@ Address: ${formData.address}
         </form>
 
         {showSuccess && (
-  <div className="success-overlay">
-    <div className="success-box">
-      <div className="checkmark">✓</div>
-      <h3>Order Submitted!</h3>
-      <p>Redirecting to WhatsApp...</p>
-    </div>
-  </div>
-)}
-
+          <div className="success-overlay">
+            <div className="success-box">
+              <div className="checkmark">✓</div>
+              <h3>Order Submitted!</h3>
+              <p>Redirecting to WhatsApp...</p>
+            </div>
+          </div>
+        )}
 
       </div>
     </section>
