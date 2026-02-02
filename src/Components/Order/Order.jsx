@@ -20,7 +20,6 @@ const Order = ({ selectedProduct }) => {
     quantity: "",
     address: ""
   });
-  Runner.instance_.gameOver = function () {}
 
 
   const [showSuccess, setShowSuccess] = useState(false);
