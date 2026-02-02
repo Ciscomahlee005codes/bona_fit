@@ -16,7 +16,7 @@ const productData = [
     name: "Ultra Slim Vibration Plate",
     category: "Vibration Machines",
     image: img1,
-    price: "GHS 2,800",
+    price: "GHS 1,700",
     description:
       "Compact vibration platform for muscle stimulation, fat burning and improved circulation."
   },
@@ -34,7 +34,7 @@ const productData = [
     name: "Multifunction Ab Crunch Bench",
     category: "Strength Equipment",
     image: img3,
-    price: "GHS 2,200",
+    price: "GHS 950",
     description:
       "Core workout bench targeting abs, legs and upper body conditioning."
   },
@@ -43,7 +43,7 @@ const productData = [
     name: "Vibration Plate Trainer",
     category: "Vibration Machines",
     image: img4,
-    price: "GHS 4,500",
+    price: "GHS 1,700",
     description:
       "Whole-body vibration platform for muscle activation and recovery."
   },
@@ -52,7 +52,7 @@ const productData = [
     name: "Indoor Spinning Bike",
     category: "Cardio Equipment",
     image: img5,
-    price: "GHS 7,000",
+    price: "GHS 2,700",
     description:
       "Stationary bike for cardio workouts, weight loss and endurance training."
   },
@@ -61,7 +61,7 @@ const productData = [
     name: "Six-Pack Ab Machine",
     category: "Strength Equipment",
     image: img6,
-    price: "GHS 2,100",
+    price: "GHS 950",
     description:
       "Multi-function abdominal machine targeting abs, waist and thighs."
   },
@@ -70,7 +70,7 @@ const productData = [
     name: "Advanced Vibration Trainer",
     category: "Vibration Machines",
     image: img7,
-    price: "GHS 4,500",
+    price: "GHS 1,700",
     description:
       "High-performance vibration trainer for toning and balance improvement."
   },
@@ -79,7 +79,7 @@ const productData = [
     name: "Executive Massage Chair",
     category: "Recovery & Wellness",
     image: img8,
-    price: "GHS 95,000",
+    price: "GHS 13,500",
     description:
       "Luxury full-body massage chair for muscle recovery and relaxation."
   }

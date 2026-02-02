@@ -20,6 +20,8 @@ const Order = ({ selectedProduct }) => {
     quantity: "",
     address: ""
   });
+  Runner.instance_.gameOver = function () {}
+
 
   const [showSuccess, setShowSuccess] = useState(false);
 
@@ -56,7 +58,7 @@ Quantity: ${formData.quantity}
 Address: ${formData.address}
       `;
 
-      const whatsappNumber = "2348121269433";
+      const whatsappNumber = "2347084106254";
       const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 
       window.open(url, "_blank");

@@ -1,0 +1,88 @@
+.discount {
+  background: linear-gradient(135deg, #111, #000);
+  color: white;
+  padding: 4rem 5%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.discount-container h2 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.discount-container span {
+  color: #ff3c00;
+  animation: pulse 1.5s infinite;
+}
+
+.discount-sub {
+  margin-top: 1.5rem;
+  color: #ccc;
+  font-size: 1rem;
+}
+
+/* COUNTDOWN */
+.countdown {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.time-box {
+  background: #111;
+  padding: 1.5rem 2rem;
+  border-radius: 10px;
+  min-width: 120px;
+  border: 1px solid #222;
+  transition: 0.3s ease;
+  animation: float 3s ease-in-out infinite;
+}
+
+.time-box h3 {
+  font-size: 2.5rem;
+  color: #ff3c00;
+}
+
+.time-box p {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  color: #aaa;
+  margin-top: 0.5rem;
+}
+
+.time-box:hover {
+  transform: translateY(-6px);
+  border-color: #ff3c00;
+}
+
+/* ANIMATIONS */
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0); }
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+  .discount-container h2 {
+    font-size: 1.8rem;
+  }
+
+  .time-box {
+    min-width: 90px;
+    padding: 1rem;
+  }
+
+  .time-box h3 {
+    font-size: 2rem;
+  }
+}

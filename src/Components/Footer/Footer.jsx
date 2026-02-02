@@ -20,7 +20,7 @@ const Footer = () => {
             <a href="#"><FaFacebookF /></a>
             <a href="#"><FaInstagram /></a>
             <a href="#"><FaTwitter /></a>
-            <a href="https://wa.me/234XXXXXXXXXX"><FaWhatsapp /></a>
+            <a href="https://wa.me/2347084106254"><FaWhatsapp /></a>
           </div>
         </div>
 
@@ -51,13 +51,13 @@ const Footer = () => {
         <div className="footer-col">
           <h3>Contact</h3>
           <ul className="contact-info">
-            <li>Email: support@fitgear.com</li>
-            <li>Phone: +234 XXX XXX XXXX</li>
+            <li>Email: bonafitstore314@gmail.com</li>
+            <li>Phone: +234 708 410 6254</li>
             <li>Location: Lagos, Nigeria</li>
           </ul>
 
           <a
-            href="https://wa.me/234XXXXXXXXXX"
+            href="https://wa.me/2347084106254"
             className="whatsapp-btn"
             target="_blank"
             rel="noopener noreferrer"
