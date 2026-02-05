@@ -3,9 +3,9 @@ import "./Hero.css";
 
 import img1 from "../../assets/gym-1.jpg";
 import img2 from "../../assets/gym-2.jpg";
-import img3 from "../../assets/gym-3.jpg";
+import img4 from "../../assets/gym-4.jpg";
 
-const slides = [img1, img2, img3];
+const slides = [img1, img2, img4];
 
 const Hero = () => {
   const [current, setCurrent] = useState(0);

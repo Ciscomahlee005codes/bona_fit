@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import "./Order.css";
 
+const whatsappNumber = "2347084106254";
+
 const products = [
   "Ultra Slim Vibration Plate",
   "Crosley Whole Body Vibration",
@@ -21,10 +23,8 @@ const Order = ({ selectedProduct }) => {
     address: ""
   });
 
-
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Auto-fill product when coming from Product card
   useEffect(() => {
     if (selectedProduct) {
       setFormData((prev) => ({
@@ -57,12 +57,9 @@ Quantity: ${formData.quantity}
 Address: ${formData.address}
       `;
 
-      const whatsappNumber = "2347084106254";
       const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-
       window.open(url, "_blank");
 
-      // Reset form after sending
       setFormData({
         name: "",
         phone: "",
@@ -75,6 +72,13 @@ Address: ${formData.address}
     }, 2000);
   };
 
+  // 🔥 Quick WhatsApp CTA
+  const handleQuickWhatsApp = () => {
+    const message = `Hello, I'm interested in your fitness equipment. Please send me more details.`;
+    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+    window.open(url, "_blank");
+  };
+
   return (
     <section className="order" id="order">
       <div className="order-container">
@@ -84,9 +88,17 @@ Address: ${formData.address}
             PLACE YOUR <span>ORDER</span>
           </h2>
           <p>
-            Ready to upgrade your fitness game? Fill out the form and
-            we’ll get your equipment delivered fast and securely.
+            Ready to upgrade your fitness game? Fill out the form or chat instantly on WhatsApp.
           </p>
+
+          {/* 🔥 QUICK CTA BOX */}
+          <div className="quick-cta">
+            <h3>⚡ Need it fast?</h3>
+            <p>Skip the form and chat with us instantly on WhatsApp.</p>
+            <button onClick={handleQuickWhatsApp} className="whatsapp-btn">
+              Chat on WhatsApp
+            </button>
+          </div>
         </div>
 
         <form className="order-form" onSubmit={handleSubmit}>
@@ -140,7 +152,7 @@ Address: ${formData.address}
             onChange={handleChange}
           ></textarea>
 
-          <button type="submit">
+          <button type="submit" className="submit-btn">
             Submit Order
           </button>
         </form>
@@ -154,7 +166,6 @@ Address: ${formData.address}
             </div>
           </div>
         )}
-
       </div>
     </section>
   );

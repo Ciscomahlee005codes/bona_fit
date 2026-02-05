@@ -53,7 +53,7 @@ const Footer = () => {
           <ul className="contact-info">
             <li>Email: bonafitstore314@gmail.com</li>
             <li>Phone: +234 708 410 6254</li>
-            <li>Location: Lagos, Nigeria</li>
+            <li>Location: Accra, Ghana</li>
           </ul>
 
           <a
