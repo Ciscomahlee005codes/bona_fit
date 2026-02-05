@@ -79,7 +79,7 @@ Category: ${product.category}
 Please provide more details.
                 `;
 
-                const whatsappNumber = "233XXXXXXXXX"; // Use Ghana number format
+                const whatsappNumber = "2347084106254"; 
                 const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 
                 window.open(url, "_blank");
