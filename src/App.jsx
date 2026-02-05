@@ -17,14 +17,28 @@ function App() {
 
   const location = useLocation();
 
-useEffect(() => {
+  useEffect(() => {
+  if (loading) return; // 🚨 IMPORTANT — wait for loader to finish
+
   if (location.state?.scrollTo === "products") {
     const section = document.getElementById("products");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
+    section?.scrollIntoView({ behavior: "smooth" });
   }
-}, [location]);
+
+  if (location.state?.scrollTo === "order") {
+    if (location.state?.selectedProduct) {
+      setSelectedProduct(location.state.selectedProduct);
+    }
+
+    const section = document.getElementById("order");
+    section?.scrollIntoView({ behavior: "smooth" });
+  }
+
+  // Clear navigation state
+  window.history.replaceState({}, document.title);
+
+}, [location, loading]);
+
 
 
   if (loading) {

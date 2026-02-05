@@ -111,6 +111,23 @@
   font-size: 0.9rem;
   color: #ccc;
 }
+.details-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.primary-btn {
+  background: #ff3c00;
+}
+
+.whatsapp-btn {
+  background: #25d366;
+}
+
+.whatsapp-btn:hover {
+  background: #1ebe5d;
+}
 
 @media (max-width: 768px) {
   .details-grid {

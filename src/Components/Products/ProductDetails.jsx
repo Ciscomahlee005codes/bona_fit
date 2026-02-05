@@ -65,28 +65,49 @@ const ProductDetails = () => {
               {product.description}
             </p>
 
-            <button
-              className="details-order-btn"
-              onClick={() => {
-                const message = `
+            <div className="details-buttons">
+
+  {/* Order via Form */}
+  <button
+    className="details-order-btn primary-btn"
+    onClick={() => {
+      navigate("/", {
+        state: {
+          scrollTo: "order",
+          selectedProduct: product.name,
+        },
+      });
+    }}
+  >
+    Order Now
+  </button>
+
+  {/* Quick WhatsApp */}
+  <button
+    className="details-order-btn whatsapp-btn"
+    onClick={() => {
+      const message = `
 Hello, I am interested in this product:
 
 Product: ${product.name}
 Discounted Price: GHS ${newPrice.toLocaleString()}
-Old Price: GHS ${oldPrice.toLocaleString()}
 Category: ${product.category}
 
 Please provide more details.
-                `;
+      `;
 
-                const whatsappNumber = "2347084106254"; 
-                const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+      const whatsappNumber = "2347084106254";
+      const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
 
-                window.open(url, "_blank");
-              }}
-            >
-              Order via WhatsApp
-            </button>
+      window.open(url, "_blank");
+    }}
+  >
+    Order via WhatsApp
+  </button>
+
+</div>
+
+            
 
           </div>
         </div>
