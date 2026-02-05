@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./Products.css";
 import { useNavigate } from "react-router-dom";
-import { productData } from "../../../productData";
+import { productData } from "../../productData";
 
 
 const categories = [

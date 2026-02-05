@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { productData } from "../../../productData";
+import { productData } from "../../productData";
 import "./ProductDetails.css";
 
 const ProductDetails = () => {

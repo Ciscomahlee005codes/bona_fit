@@ -1,11 +1,11 @@
-import img1 from "../bona_fit/src/assets/gym-equ1.jpeg";
-import img2 from "../bona_fit/src/assets/gym-equ2.jpeg";
-import img3 from "../bona_fit/src/assets/gym-equ3.jpeg";
-import img4 from "../bona_fit/src/assets/gym-equ4.jpeg";
-import img5 from "../bona_fit/src/assets/gym-equ5.jpeg";
-import img6 from "../bona_fit/src/assets/gym-equ6.jpeg";
-import img7 from "../bona_fit/src/assets/gym-equ7.jpeg";
-import img8 from "../bona_fit/src/assets/gym-equ8.jpeg";
+import img1 from "../src/assets/gym-equ1.jpeg";
+import img2 from "../src/assets/gym-equ2.jpeg";
+import img3 from "../src/assets/gym-equ3.jpeg";
+import img4 from "../src/assets/gym-equ4.jpeg";
+import img5 from "../src/assets/gym-equ5.jpeg";
+import img6 from "../src/assets/gym-equ6.jpeg";
+import img7 from "../src/assets/gym-equ7.jpeg";
+import img8 from "../src/assets/gym-equ8.jpeg";
 
 export const productData = [
   {
