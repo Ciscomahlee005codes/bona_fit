@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { supabase } from "../../supabase";
+import { useNavigate } from "react-router-dom";
 import "./Admin.css";
 
 const categories = [
@@ -21,6 +22,7 @@ const Admin = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({
@@ -124,7 +126,12 @@ else {
   return (
     <div className="admin-page">
       <div className="admin-container">
-
+        <button 
+    className="back-btn"
+    onClick={() => navigate("/")}
+  >
+    ← Back to Home
+  </button>
         <div className="admin-header">
           <h1>Admin Dashboard</h1>
           <p>Add new products to your store</p>
