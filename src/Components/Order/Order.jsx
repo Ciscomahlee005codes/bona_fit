@@ -1,38 +1,53 @@
 import { useState, useEffect } from "react";
+import { supabase } from "../../supabase";
 import "./Order.css";
 
 const whatsappNumber = "2347084106254";
 
-const products = [
-  "Ultra Slim Vibration Plate",
-  "Crosley Whole Body Vibration",
-  "Vibration Plate Trainer",
-  "Six-Pack Ab Machine",
-  "Executive Massage Chair",
-  "Multifunction Ab Crunch Bench",
-  "Indoor Spinning Bike",
-  "Advanced Vibration Trainer"
-];
-
 const Order = ({ selectedProduct }) => {
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    product: selectedProduct || "",
-    quantity: "",
-    address: ""
-  });
-
+  const [products, setProducts] = useState([]);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
+   const [formData, setFormData] = useState({
+  name: "",
+  phone: "",
+  product: "",
+  quantity: 1,
+  address: ""
+});
+
+
+  // 🔥 Fetch products dynamically
   useEffect(() => {
-    if (selectedProduct) {
-      setFormData((prev) => ({
-        ...prev,
-        product: selectedProduct
-      }));
-    }
-  }, [selectedProduct]);
+    const fetchProducts = async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select("name")
+        .order("name");
+
+      if (!error) {
+        setProducts(data);
+      }
+
+      setLoadingProducts(false);
+    };
+
+    fetchProducts();
+  }, []);
+
+  // 🔥 Auto-fill selected product
+   useEffect(() => {
+  if (selectedProduct) {
+    setFormData((prev) => ({
+      ...prev,
+      product: selectedProduct,
+      quantity: 1
+    }));
+  }
+}, [selectedProduct]);
+
 
   const handleChange = (e) => {
     setFormData({
@@ -41,11 +56,31 @@ const Order = ({ selectedProduct }) => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
+
+    // ✅ Save order to Supabase
+    const { error } = await supabase.from("orders").insert([
+      {
+        name: formData.name,
+        phone: formData.phone,
+        product: formData.product,
+        quantity: formData.quantity,
+        address: formData.address
+      }
+    ]);
+
+    if (error) {
+      alert("Error submitting order");
+      console.log(error);
+      setSubmitting(false);
+      return;
+    }
 
     setShowSuccess(true);
 
+    // 🔥 Send to WhatsApp after saving
     setTimeout(() => {
       const message = `
 Hello, I want to place an order:
@@ -69,14 +104,8 @@ Address: ${formData.address}
       });
 
       setShowSuccess(false);
-    }, 2000);
-  };
-
-  // 🔥 Quick WhatsApp CTA
-  const handleQuickWhatsApp = () => {
-    const message = `Hello, I'm interested in your fitness equipment. Please send me more details.`;
-    const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
-    window.open(url, "_blank");
+      setSubmitting(false);
+    }, 1500);
   };
 
   return (
@@ -88,17 +117,8 @@ Address: ${formData.address}
             PLACE YOUR <span>ORDER</span>
           </h2>
           <p>
-            Ready to upgrade your fitness game? Fill out the form or chat instantly on WhatsApp.
+            Fill the form below and your order will be processed instantly.
           </p>
-
-          {/* 🔥 QUICK CTA BOX */}
-          <div className="quick-cta">
-            <h3>⚡ Need it fast?</h3>
-            <p>Skip the form and chat with us instantly on WhatsApp.</p>
-            <button onClick={handleQuickWhatsApp} className="whatsapp-btn">
-              Chat on WhatsApp
-            </button>
-          </div>
         </div>
 
         <form className="order-form" onSubmit={handleSubmit}>
@@ -125,11 +145,15 @@ Address: ${formData.address}
             required
             value={formData.product}
             onChange={handleChange}
+            disabled={!!selectedProduct}
           >
-            <option value="">Select Product</option>
+            <option value="">
+              {loadingProducts ? "Loading products..." : "Select Product"}
+            </option>
+
             {products.map((item, index) => (
-              <option key={index} value={item}>
-                {item}
+              <option key={index} value={item.name}>
+                {item.name}
               </option>
             ))}
           </select>
@@ -152,8 +176,12 @@ Address: ${formData.address}
             onChange={handleChange}
           ></textarea>
 
-          <button type="submit" className="submit-btn">
-            Submit Order
+          <button
+            type="submit"
+            className="submit-btn"
+            disabled={submitting}
+          >
+            {submitting ? "Processing..." : "Submit Order"}
           </button>
         </form>
 
@@ -161,7 +189,7 @@ Address: ${formData.address}
           <div className="success-overlay">
             <div className="success-box">
               <div className="checkmark">✓</div>
-              <h3>Order Submitted!</h3>
+              <h3>Order Saved Successfully!</h3>
               <p>Redirecting to WhatsApp...</p>
             </div>
           </div>

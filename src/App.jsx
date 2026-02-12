@@ -1,5 +1,6 @@
-import React, { useState, useEffect  } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+
 import Navbar from "./Components/Navbar/Navbar";
 import Hero from "./Components/Hero/Hero";
 import About from "./Components/About/About";
@@ -11,35 +12,33 @@ import Footer from "./Components/Footer/Footer";
 import Loader from "./Components/Loader/Loader";
 import DiscountCountdown from "./Components/DiscountCountdown/DiscountCountdown";
 
-function App() {
+import ProductDetails from "./Components/Products/ProductDetails";
+import Admin from "./Components/Admin/Admin";
+
+function HomeLayout() {
   const [selectedProduct, setSelectedProduct] = useState("");
   const [loading, setLoading] = useState(true);
-
   const location = useLocation();
 
   useEffect(() => {
-  if (loading) return; // 🚨 IMPORTANT — wait for loader to finish
+    if (loading) return;
 
-  if (location.state?.scrollTo === "products") {
-    const section = document.getElementById("products");
-    section?.scrollIntoView({ behavior: "smooth" });
-  }
-
-  if (location.state?.scrollTo === "order") {
-    if (location.state?.selectedProduct) {
-      setSelectedProduct(location.state.selectedProduct);
+    if (location.state?.scrollTo === "products") {
+      const section = document.getElementById("products");
+      section?.scrollIntoView({ behavior: "smooth" });
     }
 
-    const section = document.getElementById("order");
-    section?.scrollIntoView({ behavior: "smooth" });
-  }
+    if (location.state?.scrollTo === "order") {
+      if (location.state?.selectedProduct) {
+        setSelectedProduct(location.state.selectedProduct);
+      }
 
-  // Clear navigation state
-  window.history.replaceState({}, document.title);
+      const section = document.getElementById("order");
+      section?.scrollIntoView({ behavior: "smooth" });
+    }
 
-}, [location, loading]);
-
-
+    window.history.replaceState({}, document.title);
+  }, [location, loading]);
 
   if (loading) {
     return <Loader onFinish={() => setLoading(false)} />;
@@ -48,19 +47,27 @@ function App() {
   return (
     <>
       <Navbar />
-
       <main>
         <Hero />
         <DiscountCountdown />
         <About />
-        <Products setSelectedProduct={setSelectedProduct} />
+        <Products />
         <Order selectedProduct={selectedProduct} />
         <Testimonials />
         <Contact />
       </main>
-
       <Footer />
     </>
+  );
+}
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<HomeLayout />} />
+      <Route path="/product/:slug" element={<ProductDetails />} />
+      <Route path="/admin" element={<Admin />} />
+    </Routes>
   );
 }
 

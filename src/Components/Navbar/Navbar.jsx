@@ -24,6 +24,7 @@ const Navbar = () => {
               Contact Us
             </a>
           </li>
+
         </ul>
 
         {/* Hamburger */}

@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./Products.css";
 import { useNavigate } from "react-router-dom";
-import { productData } from "../../productData";
-
+import { supabase } from "../../supabase";
 
 const categories = [
   "All",
@@ -12,17 +11,48 @@ const categories = [
   "Recovery & Wellness"
 ];
 
-
-const Products = ({ setSelectedProduct }) => {
+const Products = () => {
   const navigate = useNavigate();
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // 🔥 Fetch Products From Supabase
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.log(error);
+      } else {
+        setProducts(data);
+      }
+
+      setLoading(false);
+    };
+
+    fetchProducts();
+  }, []);
 
   const filteredProducts =
     selectedCategory === "All"
-      ? productData
-      : productData.filter(
+      ? products
+      : products.filter(
           (product) => product.category === selectedCategory
         );
+
+  if (loading) {
+    return (
+      <section className="products">
+        <h2 style={{ color: "white", textAlign: "center" }}>
+          Loading Products...
+        </h2>
+      </section>
+    );
+  }
 
   return (
     <section className="products" id="products">
@@ -36,7 +66,9 @@ const Products = ({ setSelectedProduct }) => {
             <button
               key={index}
               className={
-                selectedCategory === cat ? "filter-btn active" : "filter-btn"
+                selectedCategory === cat
+                  ? "filter-btn active"
+                  : "filter-btn"
               }
               onClick={() => setSelectedCategory(cat)}
             >
@@ -62,15 +94,18 @@ const Products = ({ setSelectedProduct }) => {
                 </p>
 
                 <div className="product-bottom">
-                  <p className="product-price">GHS {product.price}</p>
+                  <p className="product-price">
+                    GHS {product.price.toLocaleString()}
+                  </p>
 
                   <button
-  className="order-btn"
-  onClick={() => navigate(`/product/${product.slug}`)}
->
-  View Details
-</button>
-
+                    className="order-btn"
+                    onClick={() =>
+                      navigate(`/product/${product.slug}`)
+                    }
+                  >
+                    View Details
+                  </button>
                 </div>
               </div>
             </div>
