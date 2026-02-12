@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "../../supabase";
 import { useNavigate } from "react-router-dom";
 import "./Admin.css";
@@ -11,6 +11,12 @@ const categories = [
 ];
 
 const Admin = () => {
+  const navigate = useNavigate();
+
+  const [products, setProducts] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [loadingProducts, setLoadingProducts] = useState(true);
+
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -22,7 +28,38 @@ const Admin = () => {
   const [imagePreview, setImagePreview] = useState(null);
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
-  const navigate = useNavigate();
+
+  // ✅ Fetch Products
+  const fetchProducts = async () => {
+    const { data, error } = await supabase
+      .from("products")
+      .select("*")
+      .order("created_at", { ascending: false });
+
+    if (!error) setProducts(data);
+
+    setLoadingProducts(false);
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  // ✅ Check Admin
+  useEffect(() => {
+    const checkAdmin = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+
+      if (user?.email === "youradmin@email.com") {
+        setIsAdmin(true);
+      } 
+      // else {
+      //   navigate("/");
+      // }
+    };
+
+    checkAdmin();
+  }, [navigate]);
 
   const handleChange = (e) => {
     setFormData({
@@ -31,47 +68,38 @@ const Admin = () => {
     });
   };
 
-  // 🔥 Handle Image Upload + Preview
- const handleImageChange = async (e) => {
-  const file = e.target.files[0];
-  if (!file) return;
+  // ✅ Upload Image
+  const handleImageChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  console.log("Uploading file:", file);
+    const fileName = `${Date.now()}-${file.name}`;
 
-  const fileName = `${Date.now()}-${file.name}`;
+    const { error } = await supabase.storage
+      .from("products")
+      .upload(fileName, file);
 
-  const { data, error } = await supabase.storage
-    .from("products")
-    .upload(fileName, file);
+    if (error) {
+      alert(error.message);
+      return;
+    }
 
-  if (error) {
-    console.error("UPLOAD ERROR:", error);
-    alert(error.message);
-    return;
-  }
+    const { data } = supabase.storage
+      .from("products")
+      .getPublicUrl(fileName);
 
-  console.log("Upload success:", data);
+    setFormData((prev) => ({
+      ...prev,
+      image: data.publicUrl
+    }));
 
-  const { data: publicData } = supabase.storage
-    .from("products")
-    .getPublicUrl(fileName);
-
-  const publicUrl = publicData.publicUrl;
-
-  console.log("Public URL:", publicUrl);
-
-  setFormData((prev) => ({
-    ...prev,
-    image: publicUrl
-  }));
-
-  setImagePreview(publicUrl);
-};
-
-  const generateSlug = (name) => {
-    return name.toLowerCase().replace(/\s+/g, "-");
+    setImagePreview(data.publicUrl);
   };
 
+  const generateSlug = (name) =>
+    name.toLowerCase().replace(/\s+/g, "-");
+
+  // ✅ Add Product
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -79,7 +107,6 @@ const Admin = () => {
 
     const slug = generateSlug(formData.name);
 
-    // 🔥 Check if slug exists
     const { data: existing } = await supabase
       .from("products")
       .select("id")
@@ -87,29 +114,24 @@ const Admin = () => {
       .maybeSingle();
 
     if (existing) {
-      setMessage("❌ Product with this name already exists");
+      setMessage("❌ Product already exists");
       setLoading(false);
       return;
     }
 
     const { error } = await supabase.from("products").insert([
       {
-        name: formData.name,
-        category: formData.category,
+        ...formData,
         price: Number(formData.price),
-        description: formData.description,
-        image: formData.image,
         slug,
         created_at: new Date()
       }
     ]);
 
     if (error) {
-  console.error("SUPABASE ERROR:", error);
-  setMessage(`❌ ${error.message}`);
-}
-else {
-      setMessage("✅ Product added successfully!");
+      setMessage("❌ Error adding product");
+    } else {
+      setMessage("✅ Product added successfully");
       setFormData({
         name: "",
         category: "",
@@ -118,107 +140,139 @@ else {
         image: ""
       });
       setImagePreview(null);
+      fetchProducts(); // 🔥 refresh list
     }
 
     setLoading(false);
   };
 
+  // ✅ DELETE PRODUCT
+  const handleDelete = async (product) => {
+    const confirmDelete = window.confirm(
+      `Delete ${product.name}?`
+    );
+    if (!confirmDelete) return;
+
+    // delete from DB
+    const { error } = await supabase
+      .from("products")
+      .delete()
+      .eq("id", product.id);
+
+    if (error) {
+      alert("Error deleting product");
+      return;
+    }
+
+    // delete from storage
+    const filePath = product.image.split("/products/")[1];
+
+    await supabase.storage
+      .from("products")
+      .remove([filePath]);
+
+    // update UI instantly
+    setProducts((prev) =>
+      prev.filter((p) => p.id !== product.id)
+    );
+
+    alert("Product deleted successfully");
+  };
+
   return (
     <div className="admin-page">
       <div className="admin-container">
-        <button 
-    className="back-btn"
-    onClick={() => navigate("/")}
-  >
-    ← Back to Home
-  </button>
-        <div className="admin-header">
-          <h1>Admin Dashboard</h1>
-          <p>Add new products to your store</p>
-        </div>
 
-        <div className="admin-card">
-          <form onSubmit={handleSubmit} className="admin-form">
+        <button className="back-btn" onClick={() => navigate("/")}>
+          ← Back to Home
+        </button>
 
-            {/* Product Name */}
-            <div className="form-group">
-              <label>Product Name</label>
-              <input
-                name="name"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-            </div>
+        <h1>Admin Dashboard</h1>
 
-            {/* Category Dropdown */}
-            <div className="form-group">
-              <label>Category</label>
-              <select
-                name="category"
-                value={formData.category}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Select Category</option>
-                {categories.map((cat, index) => (
-                  <option key={index} value={cat}>
-                    {cat}
-                  </option>
-                ))}
-              </select>
-            </div>
+        {/* ADD PRODUCT FORM */}
+        <form onSubmit={handleSubmit} className="admin-form">
 
-            {/* Price */}
-            <div className="form-group">
-              <label>Price (GHS)</label>
-              <input
-                type="number"
-                name="price"
-                value={formData.price}
-                onChange={handleChange}
-                required
-              />
-            </div>
+          <input
+            name="name"
+            placeholder="Product Name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
 
-            {/* Image Upload */}
-            <div className="form-group">
-              <label>Upload Image</label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                required
-              />
-            </div>
+          <select
+            name="category"
+            value={formData.category}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Select Category</option>
+            {categories.map((cat, i) => (
+              <option key={i}>{cat}</option>
+            ))}
+          </select>
 
-            {/* Image Preview */}
-            {imagePreview && (
-              <div className="image-preview">
-                <img src={imagePreview} alt="Preview" />
+          <input
+            type="number"
+            name="price"
+            placeholder="Price"
+            value={formData.price}
+            onChange={handleChange}
+            required
+          />
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+            required
+          />
+
+          {imagePreview && (
+            <img src={imagePreview} width="120" />
+          )}
+
+          <textarea
+            name="description"
+            placeholder="Description"
+            value={formData.description}
+            onChange={handleChange}
+            required
+          />
+
+          <button type="submit" disabled={loading}>
+            {loading ? "Adding..." : "Add Product"}
+          </button>
+
+          {message && <p>{message}</p>}
+        </form>
+
+        {/* PRODUCT LIST WITH DELETE */}
+        <h2>All Products</h2>
+
+        {loadingProducts ? (
+          <p>Loading...</p>
+        ) : (
+          <div className="admin-product-list">
+            {products.map((product) => (
+              <div key={product.id} className="admin-product-item">
+                <img src={product.image} width="80" />
+                <div>
+                  <h4>{product.name}</h4>
+                  <p>GHS {product.price}</p>
+                </div>
+
+                <button
+  className="delete-btn"
+  onClick={() => handleDelete(product)}
+>
+  🗑 Delete
+</button>
+
               </div>
-            )}
-
-            {/* Description */}
-            <div className="form-group">
-              <label>Description</label>
-              <textarea
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                required
-              />
-            </div>
-
-            <button type="submit" disabled={loading}>
-              {loading ? "Adding..." : "Add Product"}
-            </button>
-
-            {message && <p className="form-message">{message}</p>}
-
-          </form>
-        </div>
-
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
