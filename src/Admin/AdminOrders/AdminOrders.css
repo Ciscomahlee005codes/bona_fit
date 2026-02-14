@@ -1,0 +1,111 @@
+.admin-orders {
+  padding: 2rem;
+}
+
+.admin-orders h1 {
+  margin-bottom: 1.5rem;
+  color: white;
+  font-size: 1.8rem;
+}
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  background: #151515;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  max-width: 400px;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.5rem 0.8rem;
+  background: transparent;
+  border: none;
+  color: white;
+  outline: none;
+}
+
+.search-bar .search-icon {
+  color: #ccc;
+  margin-right: 0.5rem;
+}
+
+.orders-table {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.orders-header,
+.orders-row {
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr 1fr 3fr 2fr;
+  background: #151515;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  align-items: center;
+  color: white;
+}
+
+.orders-header {
+  font-weight: bold;
+  background: #222;
+}
+
+.orders-row:nth-child(even) {
+  background: #1a1a1a;
+}
+
+.whatsapp-btn {
+  background: #25d366;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.3s;
+}
+
+.whatsapp-btn .icon {
+  font-size: 1rem;
+}
+
+.whatsapp-btn:hover {
+  opacity: 0.9;
+}
+
+.loading {
+  color: white;
+  text-align: center;
+  padding: 2rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .orders-header,
+  .orders-row {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: repeat(3, auto);
+    gap: 0.5rem;
+    padding: 0.5rem;
+  }
+
+  .orders-header span {
+    display: none; /* Hide header labels on mobile */
+  }
+
+  .orders-row span {
+    display: block;
+  }
+
+  .whatsapp-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+    justify-content: center;
+  }
+}

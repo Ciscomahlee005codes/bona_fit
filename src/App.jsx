@@ -11,9 +11,11 @@ import Contact from "./Components/Contact/Contact";
 import Footer from "./Components/Footer/Footer";
 import Loader from "./Components/Loader/Loader";
 import DiscountCountdown from "./Components/DiscountCountdown/DiscountCountdown";
-
 import ProductDetails from "./Components/Products/ProductDetails";
-import Admin from "./Components/Admin/Admin";
+import AdminDashboardPage from "./Pages/AdminDashboardPage";
+import AdminProductsPage from "./Pages/AdminProductsPage";
+import AdminOrdersPage from "./Pages/AdminOrderPage";
+
 
 function HomeLayout() {
   const [selectedProduct, setSelectedProduct] = useState("");
@@ -66,7 +68,10 @@ function App() {
     <Routes>
       <Route path="/" element={<HomeLayout />} />
       <Route path="/product/:slug" element={<ProductDetails />} />
-      <Route path="/admin" element={<Admin />} />
+      {/* Admin Routes */}
+      <Route path="/admin/products" element={<AdminProductsPage />} />
+      <Route path="/admin/orders" element={<AdminOrdersPage />} />
+      <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
     </Routes>
   );
 }

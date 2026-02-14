@@ -1,0 +1,22 @@
+.admin-layout {
+  display: flex;
+  min-height: 100vh;
+  background: #0f0f0f;
+  color: white;
+}
+
+/* Main content */
+.admin-main {
+  flex: 1;
+  margin-left: 220px; /* sidebar width */
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+}
+
+/* For mobile: remove margin when sidebar closed */
+@media (max-width: 768px) {
+  .admin-main {
+    margin-left: 0;
+    padding: 1.5rem;
+  }
+}
