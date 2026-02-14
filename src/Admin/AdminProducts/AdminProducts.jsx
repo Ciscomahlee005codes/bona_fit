@@ -149,15 +149,21 @@ const AdminProducts = () => {
         <div className="product-list">
           {products.map((p) => (
             <div key={p.id} className="product-item">
-              <img src={p.image} width="80" />
-              <div>
-                <h4>{p.name}</h4>
-                <p>GHS {p.price}</p>
-              </div>
-              <div className="actions">
-                <button className="delete-btn" onClick={() => handleDelete(p)}>🗑 Delete</button>
-              </div>
-            </div>
+  <div className="product-left">
+    <img src={p.image} alt={p.name} />
+    <div className="product-info">
+      <h4>{p.name}</h4>
+      <p className="price">GHS {p.price}</p>
+    </div>
+  </div>
+
+  <div className="actions">
+    <button className="delete-btn" onClick={() => handleDelete(p)}>
+      🗑 Delete
+    </button>
+  </div>
+</div>
+
           ))}
         </div>
       )}
