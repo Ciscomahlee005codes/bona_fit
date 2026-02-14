@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react"; 
 import { NavLink } from "react-router-dom";
-import { FaTachometerAlt, FaBoxOpen, FaShoppingCart, FaUsers, FaCog, FaBars } from "react-icons/fa";
+import { FaTachometerAlt, FaBoxOpen, FaShoppingCart, FaUsers, FaCog, FaBars, FaHome } from "react-icons/fa";
 import "./Sidebar.css";
 
 const Sidebar = () => {
@@ -27,24 +27,48 @@ const Sidebar = () => {
 
       <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
         <h2>Admin Panel</h2>
-        <ul>
+      <ul>
+
+  {/* 🔥 HOME LINK */}
   <li>
-    <NavLink to="/admin/dashboard" end className={({ isActive }) => isActive ? "active" : ""}>
+    <NavLink 
+      to="/" 
+      className={({ isActive }) => isActive ? "active" : ""}
+    >
+      <FaHome className="icon" /> Home
+    </NavLink>
+  </li>
+
+  <li>
+    <NavLink 
+      to="/admin/dashboard" 
+      end 
+      className={({ isActive }) => isActive ? "active" : ""}
+    >
       <FaTachometerAlt className="icon" /> Dashboard
     </NavLink>
   </li>
+
   <li>
-    <NavLink to="/admin/products" className={({ isActive }) => isActive ? "active" : ""}>
+    <NavLink 
+      to="/admin/products" 
+      className={({ isActive }) => isActive ? "active" : ""}
+    >
       <FaBoxOpen className="icon" /> Products
     </NavLink>
   </li>
+
   <li>
-    <NavLink to="/admin/orders" className={({ isActive }) => isActive ? "active" : ""}>
-      <FaShoppingCart className="icon" /> Orders
+    <NavLink 
+      to="/admin/orders" 
+      className={({ isActive }) => isActive ? "active" : ""}
+    >
+      <FaShoppingCart className="icon" /> Order History
     </NavLink>
   </li>
 
 </ul>
+
 
       </aside>
     </>

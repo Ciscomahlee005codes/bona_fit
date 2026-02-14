@@ -14,6 +14,8 @@ const AdminProducts = () => {
   const [products, setProducts] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [formOpen, setFormOpen] = useState(false);
+  const [editingProduct, setEditingProduct] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     category: "",
@@ -33,6 +35,25 @@ const AdminProducts = () => {
     if (!error) setProducts(data);
     setLoadingProducts(false);
   };
+  const openEdit = (product) => {
+  console.log("Editing product:", product);
+
+  setIsEditing(true);
+  setFormOpen(true);
+  setEditingProduct(product);
+
+  setFormData({
+    name: product.name || "",
+    category: product.category || "",
+    price: product.price || "",
+    description: product.description || "",
+    image: product.image || ""
+  });
+
+  setImagePreview(product.image);
+};
+
+
 
   useEffect(() => {
     fetchProducts();
@@ -55,36 +76,58 @@ const AdminProducts = () => {
   const generateSlug = (name) => name.toLowerCase().replace(/\s+/g, "-");
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
-    setMessage("");
+  e.preventDefault();
+  setLoading(true);
+  setMessage("");
 
+  try {
     const slug = generateSlug(formData.name);
-    const { data: existing } = await supabase.from("products").select("id").eq("slug", slug).maybeSingle();
 
-    if (existing) {
-      setMessage("❌ Product already exists");
-      setLoading(false);
-      return;
+    if (isEditing) {
+      // 🔥 UPDATE PRODUCT
+      const { error } = await supabase
+        .from("products")
+        .update({
+          ...formData,
+          price: Number(formData.price),
+          slug
+        })
+        .eq("id", editingProduct.id);
+
+      if (error) throw error;
+
+      setMessage("✅ Product updated!");
+    } else {
+      // 🔥 ADD NEW PRODUCT
+      const { error } = await supabase.from("products").insert([{
+        ...formData,
+        price: Number(formData.price),
+        slug,
+        created_at: new Date()
+      }]);
+
+      if (error) throw error;
+
+      setMessage("✅ Product added!");
     }
 
-    const { error } = await supabase.from("products").insert([{
-      ...formData,
-      price: Number(formData.price),
-      slug,
-      created_at: new Date()
-    }]);
+    // Refresh UI instantly
+    fetchProducts();
 
-    if (error) setMessage("❌ Error adding product");
-    else {
-      setMessage("✅ Product added successfully");
-      setFormData({ name: "", category: "", price: "", description: "", image: "" });
-      setImagePreview(null);
-      fetchProducts();
-      setFormOpen(false);
-    }
-    setLoading(false);
-  };
+    setFormData({ name: "", category: "", price: "", description: "", image: "" });
+    setImagePreview(null);
+    setEditingProduct(null);
+    setIsEditing(false);
+    setFormOpen(false);
+
+  } catch (err) {
+    console.log(err);
+    setMessage("❌ Something went wrong");
+  }
+
+  setLoading(false);
+};
+
 
  const handleDelete = async (product) => {
   const confirmDelete = window.confirm(
@@ -134,10 +177,19 @@ const AdminProducts = () => {
               {categories.map((cat, i) => <option key={i}>{cat}</option>)}
             </select>
             <input type="number" name="price" placeholder="Price" value={formData.price} onChange={handleChange} required />
-            <input type="file" accept="image/*" onChange={handleImageChange} required />
+            <input type="file" accept="image/*" onChange={handleImageChange} />
             {imagePreview && <img src={imagePreview} width="120" className="preview"/>}
             <textarea name="description" placeholder="Description" value={formData.description} onChange={handleChange} required />
-            <button type="submit" disabled={loading}>{loading ? "Adding..." : "Add Product"}</button>
+           <h3>{isEditing ? "Edit Product" : "Add Product"}</h3>
+
+<button type="submit" disabled={loading}>
+  {loading
+    ? "Saving..."
+    : isEditing
+    ? "Update Product"
+    : "Add Product"}
+</button>
+
             {message && <p>{message}</p>}
           </form>
         </div>
@@ -158,10 +210,23 @@ const AdminProducts = () => {
   </div>
 
   <div className="actions">
-    <button className="delete-btn" onClick={() => handleDelete(p)}>
-      🗑 Delete
-    </button>
-  </div>
+
+  <button
+    className="edit-btn"
+    onClick={() => openEdit(p)}
+  >
+    ✏️ Edit
+  </button>
+
+  <button
+    className="delete-btn"
+    onClick={() => handleDelete(p)}
+  >
+    🗑 Delete
+  </button>
+
+</div>
+
 </div>
 
           ))}
