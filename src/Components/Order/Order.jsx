@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../../supabase";
 import "./Order.css";
+import FeatureNotice from "../FeatureNotice/FeatureNotice";
 
 const whatsappNumber = "2347084106254"; // Admin number
 
@@ -10,13 +11,16 @@ const Order = ({ selectedProduct }) => {
   const [submitting, setSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
 
-  const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    product: "",
-    quantity: 1,
-    address: ""
-  });
+ const [formData, setFormData] = useState({
+  name: "",
+  phone: "",
+  product: "",
+  quantity: 1,
+  address: "",
+  region: "",
+  city: ""
+});
+
 
   // Fetch all products
   useEffect(() => {
@@ -66,15 +70,18 @@ const Order = ({ selectedProduct }) => {
 
     // Insert into Supabase with created_at timestamp
     const { data, error } = await supabase.from("orders").insert([
-      {
-        name: formData.name,
-        phone: formData.phone,
-        product: formData.product,
-        quantity: formData.quantity,
-        address: formData.address,
-        created_at: new Date() // Ensure timestamp exists
-      }
-    ]);
+  {
+    name: formData.name,
+    phone: formData.phone,
+    product: formData.product,
+    quantity: formData.quantity,
+    address: formData.address,
+    region: formData.region,
+    city: formData.city,
+    created_at: new Date()
+  }
+]);
+
 
     if (error) {
       console.error("Supabase Insert Error:", error);
@@ -94,19 +101,25 @@ Name: ${formData.name}
 Phone: ${formData.phone}
 Product: ${formData.product}
 Quantity: ${formData.quantity}
+Region: ${formData.region}
+City: ${formData.city}
 Address: ${formData.address}
-    `;
+`;
+
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank");
 
     // Reset form
-    setFormData({
-      name: "",
-      phone: "",
-      product: "",
-      quantity: 1,
-      address: ""
-    });
+     setFormData({
+  name: "",
+  phone: "",
+  product: "",
+  quantity: 1,
+  address: "",
+  region: "",
+  city: ""
+});
+
 
     setSubmitting(false);
     setShowSuccess(false);
@@ -114,6 +127,7 @@ Address: ${formData.address}
 
   return (
     <section className="order" id="order">
+      <FeatureNotice />
       <div className="order-container">
         <div className="order-left">
           <h2>PLACE YOUR <span>ORDER</span></h2>
@@ -173,6 +187,23 @@ Address: ${formData.address}
             value={formData.address}
             onChange={handleChange}
           />
+          <input
+  type="text"
+  name="region"
+  placeholder="Region / State"
+  required
+  value={formData.region}
+  onChange={handleChange}
+/>
+
+<input
+  type="text"
+  name="city"
+  placeholder="City"
+  required
+  value={formData.city}
+  onChange={handleChange}
+/>
 
           <button type="submit" className="submit-btn" disabled={submitting}>
             {submitting ? "Processing..." : "Submit Order"}

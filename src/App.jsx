@@ -6,7 +6,6 @@ import Hero from "./Components/Hero/Hero";
 import About from "./Components/About/About";
 import Products from "./Components/Products/Products";
 import Order from "./Components/Order/Order";
-import Testimonials from "./Components/Testimonials/Testimonials";
 import Contact from "./Components/Contact/Contact";
 import Footer from "./Components/Footer/Footer";
 import Loader from "./Components/Loader/Loader";
@@ -15,7 +14,8 @@ import ProductDetails from "./Components/Products/ProductDetails";
 import AdminDashboardPage from "./Pages/AdminDashboardPage";
 import AdminProductsPage from "./Pages/AdminProductsPage";
 import AdminOrdersPage from "./Pages/AdminOrderPage";
-
+import AdminTestimonialPage from "./Pages/AdminTestimonialPage";
+import Testimonials from "./Components/Testimonials/Testimonials";
 
 function HomeLayout() {
   const [selectedProduct, setSelectedProduct] = useState("");
@@ -29,6 +29,11 @@ function HomeLayout() {
       const section = document.getElementById("products");
       section?.scrollIntoView({ behavior: "smooth" });
     }
+    if (location.state?.scrollTo === "testimonials") {
+  const section = document.getElementById("testimonials");
+  section?.scrollIntoView({ behavior: "smooth" });
+}
+
 
     if (location.state?.scrollTo === "order") {
       if (location.state?.selectedProduct) {
@@ -72,6 +77,7 @@ function App() {
       <Route path="/admin/products" element={<AdminProductsPage />} />
       <Route path="/admin/orders" element={<AdminOrdersPage />} />
       <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+      <Route path="admin/testimonials" element={<AdminTestimonialPage/>} />
     </Routes>
   );
 }

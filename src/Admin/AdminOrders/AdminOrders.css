@@ -1,111 +1,104 @@
 .admin-orders {
   padding: 2rem;
-}
-
-.admin-orders h1 {
-  margin-bottom: 1.5rem;
   color: white;
-  font-size: 1.8rem;
 }
 
+/* SEARCH BAR */
 .search-bar {
   display: flex;
   align-items: center;
   background: #151515;
-  padding: 0.5rem 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  max-width: 400px;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
+  max-width: 420px;
 }
 
 .search-bar input {
   flex: 1;
-  padding: 0.5rem 0.8rem;
   background: transparent;
   border: none;
   color: white;
   outline: none;
 }
 
-.search-bar .search-icon {
-  color: #ccc;
-  margin-right: 0.5rem;
+/* TABLE WRAPPER (SCROLL ON MOBILE) */
+.orders-wrapper {
+  overflow-x: auto;
+  border-radius: 12px;
 }
 
+/* TABLE */
 .orders-table {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-
-.orders-header,
-.orders-row {
-  display: grid;
-  grid-template-columns: 2fr 2fr 2fr 1fr 3fr 2fr;
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 900px;
   background: #151515;
-  padding: 0.8rem 1rem;
-  border-radius: 8px;
-  align-items: center;
-  color: white;
+  border-radius: 12px;
 }
 
-.orders-header {
-  font-weight: bold;
+.orders-table th,
+.orders-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+.orders-table th {
   background: #222;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
-.orders-row:nth-child(even) {
-  background: #1a1a1a;
+.orders-table tr:hover {
+  background: #1c1c1c;
 }
 
+/* BUTTON */
 .whatsapp-btn {
   background: #25d366;
-  color: white;
   border: none;
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
+  color: white;
   display: flex;
   align-items: center;
   gap: 6px;
-  transition: 0.3s;
-}
-
-.whatsapp-btn .icon {
-  font-size: 1rem;
 }
 
 .whatsapp-btn:hover {
-  opacity: 0.9;
+  opacity: 0.85;
 }
-
-.loading {
-  color: white;
-  text-align: center;
-  padding: 2rem;
+.mobile-orders {
+  display: none;
 }
-
-/* Responsive */
-@media (max-width: 768px) {
-  .orders-header,
-  .orders-row {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(3, auto);
-    gap: 0.5rem;
-    padding: 0.5rem;
+/* MOBILE CARD VIEW */
+@media (max-width: 700px) {
+  .orders-table {
+    display: none;
   }
 
-  .orders-header span {
-    display: none; /* Hide header labels on mobile */
-  }
-
-  .orders-row span {
+  .orders-wrapper::after {
+    content: "Swipe → to see more";
     display: block;
-  }
-
-  .whatsapp-btn {
-    width: 100%;
-    margin-top: 0.5rem;
-    justify-content: center;
+    text-align: center;
+    margin-top: 10px;
+    color: #aaa;
   }
 }
+@media (max-width: 700px) {
+  .mobile-orders {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .mobile-card {
+    background: #151515;
+    padding: 1rem;
+    border-radius: 10px;
+  }
+}
+

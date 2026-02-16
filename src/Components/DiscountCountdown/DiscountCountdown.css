@@ -1,26 +1,30 @@
 .discount {
-  background: linear-gradient(135deg, #111, #000);
+  background: radial-gradient(circle at center, #ff3c00 0%, #000 70%);
   color: white;
-  padding: 4rem 5%;
+  padding: 5rem 5%;
   text-align: center;
   position: relative;
   overflow: hidden;
 }
 
+/* BIG BADGE */
+.discount-badge {
+  display: inline-block;
+  background: #ff3c00;
+  color: white;
+  font-size: 3rem;
+  font-weight: bold;
+  padding: 1rem 2rem;
+  border-radius: 50px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0 25px rgba(255,60,0,0.7);
+  animation: pulseGlow 1.2s infinite;
+}
+
 .discount-container h2 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   margin-bottom: 2rem;
-}
-
-.discount-container span {
-  color: #ff3c00;
-  animation: pulse 1.5s infinite;
-}
-
-.discount-sub {
-  margin-top: 1.5rem;
-  color: #ccc;
-  font-size: 1rem;
+  letter-spacing: 2px;
 }
 
 /* COUNTDOWN */
@@ -32,57 +36,35 @@
 }
 
 .time-box {
-  background: #111;
+  background: rgba(0,0,0,0.7);
   padding: 1.5rem 2rem;
-  border-radius: 10px;
+  border-radius: 15px;
   min-width: 120px;
-  border: 1px solid #222;
-  transition: 0.3s ease;
-  animation: float 3s ease-in-out infinite;
+  border: 2px solid #ff3c00;
+  box-shadow: 0 0 10px rgba(255,60,0,0.5);
 }
 
 .time-box h3 {
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   color: #ff3c00;
 }
 
 .time-box p {
   font-size: 0.9rem;
   text-transform: uppercase;
-  color: #aaa;
-  margin-top: 0.5rem;
+  color: #ddd;
 }
 
-.time-box:hover {
-  transform: translateY(-6px);
-  border-color: #ff3c00;
+.discount-sub {
+  margin-top: 2rem;
+  font-size: 1.1rem;
+  color: #fff;
+  font-weight: bold;
 }
 
-/* ANIMATIONS */
-@keyframes pulse {
-  0% { opacity: 1; }
-  50% { opacity: 0.6; }
-  100% { opacity: 1; }
-}
-
-@keyframes float {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
-  100% { transform: translateY(0); }
-}
-
-/* MOBILE */
-@media (max-width: 768px) {
-  .discount-container h2 {
-    font-size: 1.8rem;
-  }
-
-  .time-box {
-    min-width: 90px;
-    padding: 1rem;
-  }
-
-  .time-box h3 {
-    font-size: 2rem;
-  }
+/* ANIMATION */
+@keyframes pulseGlow {
+  0% { transform: scale(1); box-shadow: 0 0 10px #ff3c00; }
+  50% { transform: scale(1.08); box-shadow: 0 0 35px #ff3c00; }
+  100% { transform: scale(1); box-shadow: 0 0 10px #ff3c00; }
 }

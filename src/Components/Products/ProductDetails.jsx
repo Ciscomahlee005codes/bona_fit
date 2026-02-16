@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { supabase } from "../../supabase";
 import "./ProductDetails.css";
+import FeatureNotice from "../FeatureNotice/FeatureNotice";
 
 const ProductDetails = () => {
   const { slug } = useParams();
@@ -31,7 +32,7 @@ const ProductDetails = () => {
   if (loading) return <h2 style={{ color: "white" }}>Loading...</h2>;
   if (!product) return <h2 style={{ color: "white" }}>Product not found</h2>;
 
-  const discountPercentage = 20;
+  const discountPercentage = 40;
   const oldPrice = product.price;
   const newPrice = Math.round(oldPrice - (oldPrice * discountPercentage) / 100);
 
@@ -94,7 +95,7 @@ Please provide more details.
 
         <div className="details-grid">
           <div className="details-image">
-            <span className="discount-badge">-20%</span>
+            <span className="discount-badge">-40%</span>
             <img src={product.image} alt={product.name} />
           </div>
 
@@ -131,6 +132,7 @@ Please provide more details.
                 {submitting ? "Processing..." : "Order via WhatsApp"}
               </button>
             </div>
+            <FeatureNotice />
           </div>
         </div>
       </div>

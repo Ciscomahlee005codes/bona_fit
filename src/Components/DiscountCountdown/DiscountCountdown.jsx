@@ -5,13 +5,10 @@ const DiscountCountdown = () => {
   const getInitialTime = () => {
     const savedEndTime = localStorage.getItem("discountEndTime");
 
-    if (savedEndTime) {
-      return new Date(savedEndTime);
-    }
+    if (savedEndTime) return new Date(savedEndTime);
 
     const newEndTime = new Date();
     newEndTime.setHours(newEndTime.getHours() + 24);
-
     localStorage.setItem("discountEndTime", newEndTime);
     return newEndTime;
   };
@@ -41,15 +38,20 @@ const DiscountCountdown = () => {
     const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
-
     return () => clearInterval(timer);
   });
 
   return (
     <section className="discount">
       <div className="discount-container">
+
+        {/* BIG BADGE */}
+        <div className="discount-badge">
+          🔥 40% OFF 🔥
+        </div>
+
         <h2>
-          🔥 LIMITED OFFER – <span>20% OFF</span>
+          LIMITED TIME FITNESS DEAL
         </h2>
 
         <div className="countdown">
@@ -70,7 +72,7 @@ const DiscountCountdown = () => {
         </div>
 
         <p className="discount-sub">
-          Grab your fitness equipment now and save big!
+          Order your BonaFit equipment now before the offer ends!
         </p>
       </div>
     </section>
